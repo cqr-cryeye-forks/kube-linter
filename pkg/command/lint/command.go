@@ -107,6 +107,13 @@ func Command() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
+			file, _ := os.OpenFile("output.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+			err = formatter(file, result)
+			if err != nil {
+				return errors.Wrap(err, "output saving failed")
+			}
+
 			err = formatter(os.Stdout, result)
 			if err != nil {
 				return errors.Wrap(err, "output formatting failed")
